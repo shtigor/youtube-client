@@ -39,10 +39,11 @@ for (var c = 0; c < figureColumnCount; c++) {
 
 document.getElementsByClassName("colors__ul")[0].addEventListener("click", changeColor, false)
 
-document.getElementsByClassName("pallete__ul--color")[0].addEventListener("click", pickColor, false)
-
 document.getElementsByClassName("pallete__ul--bucket")[0].addEventListener("click", selectBucket, false)
 canvas.addEventListener("click", onClick, false);
+
+document.getElementsByClassName("pallete__ul--color")[0].addEventListener("click", selectColorPicker, false)
+canvas.addEventListener("click", pickerColor, false)
 
 document.getElementsByClassName("pallete__ul--transform")[0].addEventListener("click", selectTransform, false)
 canvas.addEventListener("click", changeFigure, false)
@@ -81,11 +82,20 @@ function selectBucket(event) {
 
 function selectTransform(event) {
   if (event) {
+    transform_select = true
     bucket_select = false
     picker_select = false
-    transform_select = true
   }
 }
+
+function selectColorPicker(event) {
+  if (event) {
+    picker_select = true
+    bucket_select = false
+    transform_select = false
+  }
+}
+
 
 
 function onClick(event) {
@@ -123,25 +133,19 @@ function changeFigure(event) {
   }
 }
 
-function pickColor(event) {
-  if (event) {
-    console.log("T")
-    picker_select = true
-    bucket_select = false
-
-    document.body.addEventListener("mousemove", (event)=> {
-      var x = event.clientX
-      var y = event.clientY
-
-      var pixel = ctx_body.getImageData(x, y, 1, 1)
-      console.log(pixel)
-      var data = pixel.data
-      // console.log(data)
-      var rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`
-      // console.log(rgb)
+function pickerColor(event) {
+  if (picker_select) {
   
-      document.getElementsByClassName("circle_current-color")[0].style.backgroundColor = rgb
-    })
+  var x = event.layerX
+  var y = event.layerY
+
+  var pixel = ctx.getImageData(x, y, 1, 1)
+  console.log(pixel)
+  var data = pixel.data
+  var rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`
+
+  document.getElementsByClassName("circle_current-color")[0].style.backgroundColor = rgb
+
   }
 }
 
@@ -180,7 +184,7 @@ function draw() {
 
   selectBucket()
   selectTransform()
-  pickColor()
+  selectColorPicker()
 
   current_colors()
   changeColor()
