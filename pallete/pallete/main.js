@@ -13,6 +13,7 @@ var color = false
 var bucket_select = false
 var picker_select = false
 var transform_select = false
+var move_select = false
 
 // COLORS
 var current_color = ""
@@ -48,6 +49,41 @@ canvas.addEventListener("click", pickerColor, false)
 document.getElementsByClassName("pallete__ul--transform")[0].addEventListener("click", selectTransform, false)
 canvas.addEventListener("click", changeFigure, false)
 
+document.getElementsByClassName("pallete__ul--move")[0].addEventListener("click", selectMove, false)
+canvas.addEventListener("mousedown", (event) => {
+  if (move_select) {
+    console.log("T")
+    var x = event.layerX
+    var y = event.layerY
+
+    for (var c = 0; c < figureColumnCount; c++) {
+      for (var r = 0; r < figureRowCount; r++) {
+        if ((x >= figures[c][r].x && x <= figures[c][r].x + figureWidth) && (y >= figures[c][r].y && y <= figures[c][r].y + figureHeight)) {
+          ctx.beginPath();
+          ctx.rect(figures[c][r].x, figures[c][r].y, figureWidth+2, figureHeight+2);
+          ctx.stroke();
+        }
+      }
+    }
+  }
+})
+
+canvas.addEventListener("mousemove", (event) => {
+  if (move_select) {
+    console.log("T")
+    var x = event.layerX
+    var y = event.layerY
+
+    for (var c = 0; c < figureColumnCount; c++) {
+      for (var r = 0; r < figureRowCount; r++) {
+        if ((x >= figures[c][r].x && x <= figures[c][r].x + figureWidth) && (y >= figures[c][r].y && y <= figures[c][r].y + figureHeight)) {
+          
+        }
+      }
+    }
+  }
+})
+
 
 function drawBasic() {
   for (var c = 0; c < figureColumnCount; c++) {
@@ -77,6 +113,7 @@ function selectBucket(event) {
     bucket_select = true
     picker_select = false
     transform_select = false
+    move_select = false
   }
 }
 
@@ -85,6 +122,7 @@ function selectTransform(event) {
     transform_select = true
     bucket_select = false
     picker_select = false
+    move_select = false
   }
 }
 
@@ -93,9 +131,18 @@ function selectColorPicker(event) {
     picker_select = true
     bucket_select = false
     transform_select = false
+    move_select = false
   }
 }
 
+function selectMove(event) {
+  if (event) {
+    move_select = true
+    picker_select = false
+    bucket_select = false
+    transform_select = false
+  }
+}
 
 
 function onClick(event) {
@@ -148,6 +195,8 @@ function pickerColor(event) {
 
   }
 }
+
+
 
 function current_colors() {
   current_color = getComputedStyle(document.getElementsByClassName("circle_current-color")[0]).backgroundColor
