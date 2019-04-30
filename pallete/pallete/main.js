@@ -14,6 +14,7 @@ var bucket_select = false
 var picker_select = false
 var transform_select = false
 var move_select = false
+var active_figure
 
 // COLORS
 var current_color = ""
@@ -22,7 +23,7 @@ var red_color = ""
 var blue_color = ""
 
 
-var active_figure
+
 
 var figures = [
   [
@@ -44,7 +45,7 @@ var figures = [
 // for (var c = 0; c < figureColumnCount; c++) {
 //   figures[c] = []
 //   for (var r = 0; r < figureRowCount; r++) {
-//     figures[c][r] = {x: 0, y: 0, color: "lightgreen", shape: "rec", active: false}
+//     figures[c][r] = {x: 0, y: 0, color: "lightgreen", shape: "rec", active: false, modified: false}
 //   }
 // }
 
@@ -62,47 +63,46 @@ document.getElementsByClassName("pallete__ul--transform")[0].addEventListener("c
 canvas.addEventListener("click", changeFigure, false)
 
 document.getElementsByClassName("pallete__ul--move")[0].addEventListener("click", selectMove, false)
+canvas.addEventListener("mousedown", moveFigure, false)
 
-canvas.addEventListener("mousedown", (event) => {
+
+function moveFigure(event) {
   if (move_select) {
-    console.log("T")
+
     var x = event.layerX
     var y = event.layerY
 
     for (var c = 0; c < figureColumnCount; c++) {
       for (var r = 0; r < figureRowCount; r++) {
         if ((x >= figures[c][r].x && x <= figures[c][r].x + figureWidth) && (y >= figures[c][r].y && y <= figures[c][r].y + figureHeight)) {
-          // ctx.beginPath();
-          // ctx.rect(figures[c][r].x, figures[c][r].y, figureWidth+2, figureHeight+2);
-          // ctx.stroke();
-
           figures[c][r].active = true
           active_figure = figures[c][r]
-
-          canvas.addEventListener("mousemove", (event) => {
-            var x = event.layerX
-            var y = event.layerY
-            for (var c = 0; c < figureColumnCount; c++) {
-              for (var r = 0; r < figureRowCount; r++) {
-                if ((x >= figures[c][r].x && x <= figures[c][r].x + figureWidth) && (y >= figures[c][r].y && y <= figures[c][r].y + figureHeight)) {
-                  figures[c][r].x = event.layerX - figureWidth / 2
-                  figures[c][r].y = event.layerY - figureHeight / 2
-                }
-              }
-            }
-          })
-
-
-          canvas.addEventListener("mouseup", () => {
-            // active_figure.status = false
-            canvas.onmousemove = null
-          })
-
         }
       }
     }
+
+    canvas.addEventListener("mousemove", (event) => {
+      var x = event.layerX
+      var y = event.layerY
+
+      if ((x >= active_figure.x && x <= active_figure.x + figureWidth) && (y >= active_figure.y && y <= active_figure.y + figureHeight)) {
+        active_figure.x = event.layerX - figureWidth / 2
+        active_figure.y = event.layerY - figureHeight / 2
+      }
+    })
+
   }
+}
+
+canvas.addEventListener("mouseup", (event) => {
+  active_figure.modified = true
+  active_figure.x = event.layerX - figureWidth / 2
+  active_figure.y = event.layerY - figureHeight / 2
+
+  active_figure = ""
 })
+
+
 
 
 
@@ -182,7 +182,7 @@ function onClick(event) {
   if (bucket_select) {
     var mx = event.layerX
     var my = event.layerY
-    console.log(mx + " " + my)
+    // console.log(mx + " " + my)
     for (var c = 0; c < figureColumnCount; c++) {
       for (var r = 0; r < figureRowCount; r++) {
         if ((mx >= figures[c][r].x && mx <= figures[c][r].x + figureWidth) && (my >= figures[c][r].y && my <= figures[c][r].y + figureHeight)) {
@@ -220,7 +220,7 @@ function pickerColor(event) {
   var y = event.layerY
 
   var pixel = ctx.getImageData(x, y, 1, 1)
-  console.log(pixel)
+  // console.log(pixel)
   var data = pixel.data
   var rgb = `rgb(${data[0]}, ${data[1]}, ${data[2]})`
 
