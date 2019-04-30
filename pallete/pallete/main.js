@@ -21,20 +21,32 @@ var prev_color = ""
 var red_color = ""
 var blue_color = ""
 
-var figures = []
-for (var c = 0; c < figureColumnCount; c++) {
-  figures[c] = []
-  for (var r = 0; r < figureRowCount; r++) {
-    figures[c][r] = {x: 0, y: 0, color: "lightgreen", shape: "rec"}
-  }
-}
 
-// var figures = [
-//   {color: "green", coord: [10, 10, 150, 150]},
-//   {color: "rebeccapurple", coord: [170, 10, 150, 150]},
-//   {color: "yellow", coord: [330, 10, 150, 150]},
-//   {color: "lightgreen", coord: [10, 170, 150, 150]},
-// ]
+var active_figure
+
+var figures = [
+  [
+    {x: 0, y: 0, color: "#cccccc", shape: "rec", active: false}, 
+    {x: 0, y: 0, color: "#bababa", shape: "rec", active: false},
+    {x: 0, y: 0, color: "#c7c7c7", shape: "circle", active: false}
+  ],
+  [
+    {x: 0, y: 0, color: "#bdbdbd", shape: "rec", active: false},
+    {x: 0, y: 0, color: "#cfcfcf", shape: "rec", active: false},
+    {x: 0, y: 0, color: "#c4c4c4", shape: "rec", active: false}
+  ],
+  [
+    {x: 0, y: 0, color: "#bfbfbf", shape: "rec", active: false},
+    {x: 0, y: 0, color: "#c9c9c9", shape: "rec", active: false},
+    {x: 0, y: 0, color: "#cccccc", shape: "rec", active: false}
+  ]
+]
+// for (var c = 0; c < figureColumnCount; c++) {
+//   figures[c] = []
+//   for (var r = 0; r < figureRowCount; r++) {
+//     figures[c][r] = {x: 0, y: 0, color: "lightgreen", shape: "rec", active: false}
+//   }
+// }
 
 
 
@@ -50,6 +62,7 @@ document.getElementsByClassName("pallete__ul--transform")[0].addEventListener("c
 canvas.addEventListener("click", changeFigure, false)
 
 document.getElementsByClassName("pallete__ul--move")[0].addEventListener("click", selectMove, false)
+
 canvas.addEventListener("mousedown", (event) => {
   if (move_select) {
     console.log("T")
@@ -59,30 +72,38 @@ canvas.addEventListener("mousedown", (event) => {
     for (var c = 0; c < figureColumnCount; c++) {
       for (var r = 0; r < figureRowCount; r++) {
         if ((x >= figures[c][r].x && x <= figures[c][r].x + figureWidth) && (y >= figures[c][r].y && y <= figures[c][r].y + figureHeight)) {
-          ctx.beginPath();
-          ctx.rect(figures[c][r].x, figures[c][r].y, figureWidth+2, figureHeight+2);
-          ctx.stroke();
+          // ctx.beginPath();
+          // ctx.rect(figures[c][r].x, figures[c][r].y, figureWidth+2, figureHeight+2);
+          // ctx.stroke();
+
+          figures[c][r].active = true
+          active_figure = figures[c][r]
+
+          canvas.addEventListener("mousemove", (event) => {
+            var x = event.layerX
+            var y = event.layerY
+            for (var c = 0; c < figureColumnCount; c++) {
+              for (var r = 0; r < figureRowCount; r++) {
+                if ((x >= figures[c][r].x && x <= figures[c][r].x + figureWidth) && (y >= figures[c][r].y && y <= figures[c][r].y + figureHeight)) {
+                  figures[c][r].x = event.layerX - figureWidth / 2
+                  figures[c][r].y = event.layerY - figureHeight / 2
+                }
+              }
+            }
+          })
+
+
+          canvas.addEventListener("mouseup", () => {
+            // active_figure.status = false
+            canvas.onmousemove = null
+          })
+
         }
       }
     }
   }
 })
 
-canvas.addEventListener("mousemove", (event) => {
-  if (move_select) {
-    console.log("T")
-    var x = event.layerX
-    var y = event.layerY
-
-    for (var c = 0; c < figureColumnCount; c++) {
-      for (var r = 0; r < figureRowCount; r++) {
-        if ((x >= figures[c][r].x && x <= figures[c][r].x + figureWidth) && (y >= figures[c][r].y && y <= figures[c][r].y + figureHeight)) {
-          
-        }
-      }
-    }
-  }
-})
 
 
 function drawBasic() {
@@ -90,16 +111,28 @@ function drawBasic() {
     for (var r = 0; r < figureRowCount; r++) {
       var figureX = (c*(figureWidth+figurePadding))+figureOffsetLeft;
       var figureY = (r*(figureHeight+figurePadding))+figureOffsetTop;
-      figures[c][r].x = figureX
-      figures[c][r].y = figureY
+      if (figures[c][r].active == false) {
+        figures[c][r].x = figureX
+        figures[c][r].y = figureY
+      }
+        
       ctx.beginPath();
       if (figures[c][r].shape == "rec") 
       {
         ctx.fillStyle = figures[c][r].color
-        ctx.fillRect(figureX, figureY, figureWidth, figureHeight)
+        if (figures[c][r].status == false) {
+          ctx.fillRect(figureX, figureY, figureWidth, figureHeight)
+        } else {
+          ctx.fillRect(figures[c][r].x, figures[c][r].y, figureWidth, figureHeight)
+        }
       } else if (figures[c][r].shape == "circle") {
         ctx.fillStyle = figures[c][r].color
-        ctx.arc(figureX+75, figureY+75, 75, 0, 2 * Math.PI)
+        if (figures[c][r].status == false) {
+          ctx.arc(figureX+75, figureY+75, 75, 0, 2 * Math.PI)
+        } else {
+          ctx.arc(figures[c][r].x+75, figures[c][r].y+75, 75, 0, 2 * Math.PI)
+        }
+        
         ctx.fill();
       }  
       ctx.fill();
