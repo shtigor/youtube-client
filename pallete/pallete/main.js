@@ -9,7 +9,6 @@ var figureWidth = 150
 var figurePadding = 10
 var figureOffsetTop = 0
 var figureOffsetLeft = 0
-var color = false
 var bucket_select = false
 var picker_select = false
 var transform_select = false
@@ -54,56 +53,48 @@ var figures = [
 document.getElementsByClassName("colors__ul")[0].addEventListener("click", changeColor, false)
 
 document.getElementsByClassName("pallete__ul--bucket")[0].addEventListener("click", selectBucket, false)
+document.body.addEventListener("keypress", (event) => {
+  if (event.code == "KeyB") {
+    bucket_select = true
+    picker_select = false
+    transform_select = false
+    move_select = false
+  }
+}, false)
 canvas.addEventListener("click", onClick, false);
 
 document.getElementsByClassName("pallete__ul--color")[0].addEventListener("click", selectColorPicker, false)
+document.body.addEventListener("keypress", (event) => {
+  if (event.code == "KeyC") {
+    bucket_select = false
+    picker_select = true
+    transform_select = false
+    move_select = false
+  }
+}, false)
 canvas.addEventListener("click", pickerColor, false)
 
 document.getElementsByClassName("pallete__ul--transform")[0].addEventListener("click", selectTransform, false)
+document.body.addEventListener("keypress", (event) => {
+  if (event.code == "KeyT") {
+    bucket_select = false
+    picker_select = false
+    transform_select = true
+    move_select = false
+  }
+}, false)
 canvas.addEventListener("click", changeFigure, false)
 
 document.getElementsByClassName("pallete__ul--move")[0].addEventListener("click", selectMove, false)
-canvas.addEventListener("mousedown", moveFigure, false)
-
-
-function moveFigure(event) {
-  if (move_select) {
-
-    var x = event.layerX
-    var y = event.layerY
-
-    for (var c = 0; c < figureColumnCount; c++) {
-      for (var r = 0; r < figureRowCount; r++) {
-        if ((x >= figures[c][r].x && x <= figures[c][r].x + figureWidth) && (y >= figures[c][r].y && y <= figures[c][r].y + figureHeight)) {
-          figures[c][r].active = true
-          active_figure = figures[c][r]
-        }
-      }
-    }
-
-    canvas.addEventListener("mousemove", (event) => {
-      var x = event.layerX
-      var y = event.layerY
-
-      if ((x >= active_figure.x && x <= active_figure.x + figureWidth) && (y >= active_figure.y && y <= active_figure.y + figureHeight)) {
-        active_figure.x = event.layerX - figureWidth / 2
-        active_figure.y = event.layerY - figureHeight / 2
-      }
-    })
-
+document.body.addEventListener("keypress", (event) => {
+  if (event.code == "KeyM") {
+    bucket_select = false
+    picker_select = false
+    transform_select = false
+    move_select = true
   }
-}
-
-canvas.addEventListener("mouseup", (event) => {
-  active_figure.modified = true
-  active_figure.x = event.layerX - figureWidth / 2
-  active_figure.y = event.layerY - figureHeight / 2
-
-  active_figure = ""
-})
-
-
-
+}, false)
+canvas.addEventListener("mousedown", moveFigure, false)
 
 
 function drawBasic() {
@@ -142,7 +133,7 @@ function drawBasic() {
 
 
 function selectBucket(event) {
-  if (event && bucket_select != true) {
+  if (event) {
     bucket_select = true
     picker_select = false
     transform_select = false
@@ -193,6 +184,7 @@ function onClick(event) {
   }  
 }
 
+
 function changeFigure(event) {
   if (transform_select) {
 
@@ -213,6 +205,7 @@ function changeFigure(event) {
   }
 }
 
+
 function pickerColor(event) {
   if (picker_select) {
   
@@ -228,6 +221,42 @@ function pickerColor(event) {
 
   }
 }
+
+
+function moveFigure(event) {
+  if (move_select) {
+
+    var x = event.layerX
+    var y = event.layerY
+
+    for (var c = 0; c < figureColumnCount; c++) {
+      for (var r = 0; r < figureRowCount; r++) {
+        if ((x >= figures[c][r].x && x <= figures[c][r].x + figureWidth) && (y >= figures[c][r].y && y <= figures[c][r].y + figureHeight)) {
+          figures[c][r].active = true
+          active_figure = figures[c][r]
+        }
+      }
+    }
+
+    canvas.addEventListener("mousemove", (event) => {
+      var x = event.layerX
+      var y = event.layerY
+
+      if ((x >= active_figure.x && x <= active_figure.x + figureWidth) && (y >= active_figure.y && y <= active_figure.y + figureHeight)) {
+        active_figure.x = event.layerX - figureWidth / 2
+        active_figure.y = event.layerY - figureHeight / 2
+      }
+    })
+
+  }
+}
+
+canvas.addEventListener("mouseup", (event) => {
+  // active_figure.x = event.layerX - figureWidth / 2
+  // active_figure.y = event.layerY - figureHeight / 2
+
+  active_figure = ""
+})
 
 
 
