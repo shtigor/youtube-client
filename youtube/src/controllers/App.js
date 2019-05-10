@@ -8,12 +8,14 @@ export default class App {
   constructor() {
     this.state = {
       url: `https://www.googleapis.com/youtube/v3/search?key=${key}&type=video&part=snippet&maxResults=${chunk}&q=`,
+      statisticsUrl: `https://www.googleapis.com/youtube/v3/videos?key=${key}&part=statistics&id=`,
     };
   }
 
   async start() {
     let model = new AppModel(this.state);
-    let data = await model.getClipNames();
+    let data = await model.getClipInfo();
+    data = await model.getClipStat(data);
 
     let view = new AppView(data);
 
@@ -31,7 +33,8 @@ export default class App {
         }
 
         model = new AppModel(this.state);
-        data = await model.getClipNames();
+        data = await model.getClipInfo();
+        data = await model.getClipStat(data);
 
         view = new AppView(data);
         view.render();

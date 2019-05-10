@@ -20,10 +20,9 @@ li {
   position: relative;
   background-color: white;
   border-radius: 5px;
-  /* padding: 5px; */
   margin-right: 50px;
   width: 250px;
-  height: 380px;
+  height: 400px;
 }
 
 .title-mod {
@@ -45,17 +44,45 @@ li {
 .channel-mod,
 .date-mod,
 .viewers-mod {
+  position: relative;
   font-weight: 600;
+  padding-bottom: 15px;
+  padding-left: 60px;
+  width: 150px;
 }
 
 .channel-mod::before {
-  content: url("../assets/tv.png");
+  content: "";
+  position: absolute;
+  background: url("../assets/tv.png") no-repeat;
+  width: 24px;
+  height: 24px;
+  top: -5px;
+  left: 25px;
 }
 
 .date-mod::before {
-  content: url("../assets/calendar.png");
+  content: "";
+  position: absolute;
+  background: url("../assets/calendar.png") no-repeat;
+  width: 24px;
+  height: 24px;
+  top: -5px;
+  left: 25px;
 }
 
 .viewers-mod::before {
-  content: url("../assets/viewer.png");
+  content: "";
+  position: absolute;
+  background: url("../assets/viewer.png") no-repeat;
+  width: 24px;
+  height: 24px;
+  top: -5px;
+  left: 25px;
+}
+
+.description-mod {
+  text-align: left;
+  margin-left: 5px;
+  width: 240px;
 }

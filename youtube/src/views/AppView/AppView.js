@@ -25,7 +25,8 @@ export default class AppView {
                                                   <a href="${item.link}" class="title-mod" target="_blank">${item.title}</a>
                                                   <p class="channel-mod">${item.channelTitle}</p>
                                                   <p class="date-mod">${item.publishAt}</p>
-                                                  <p class="viewers-mod"></p>
+                                                  <p class="viewers-mod">${item.viewCount}</p>
+                                                  <p class="description-mod">${item.description}</p>
                                                 </li>`).join('');
     document.body.appendChild(content);
   }
