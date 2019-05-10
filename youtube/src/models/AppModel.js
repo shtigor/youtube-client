@@ -10,7 +10,7 @@ export default class AppModel {
     for (let i = 0; i < data.items.length; i++) {
       item.id = data.items[i].id.videoId;
       item.title = data.items[i].snippet.title;
-      item.description = data.items[i].snippet.description;
+      item.description = `${data.items[i].snippet.description.slice(0, 100)} ...`;
       item.channelTitle = data.items[i].snippet.channelTitle;
 
       const [date] = data.items[i].snippet.publishedAt.split('T');

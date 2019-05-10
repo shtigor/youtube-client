@@ -51,6 +51,10 @@ li {
   width: 150px;
 }
 
+.viewers-mod {
+  padding-bottom: 0;
+}
+
 .channel-mod::before {
   content: "";
   position: absolute;
@@ -83,6 +87,29 @@ li {
 
 .description-mod {
   text-align: left;
+  margin-top: 0;
   margin-left: 5px;
   width: 240px;
+}
+
+.pagination-mod {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  background-color: white;
+  border-radius: 100%;
+  text-decoration: none;
+  margin-right: 5px;
+  color: white;
+  font-size: 12px;
+  line-height: 25px;
+}
+
+.red {
+  display: inline-block;
+  background-color: #cb3131;
+  border-radius: 100%;
+  width: 21px;
+  height: 21px;
+  line-height: 21px;
 }

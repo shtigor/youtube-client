@@ -1,7 +1,8 @@
 import AppModel from '../models/AppModel';
 import AppView from '../views/AppView';
 
-const key = 'AIzaSyApT_ZFxRMHcuqpc4yARUZXZsGb75SICJU';
+//'AIzaSyApT_ZFxRMHcuqpc4yARUZXZsGb75SICJU';
+const key = 'AIzaSyCTWC75i70moJLzyNh3tt4jzCljZcRkU8Y';
 const chunk = 4;
 
 export default class App {
@@ -39,6 +40,10 @@ export default class App {
         view = new AppView(data);
         view.render();
       }
+    });
+
+    document.getElementById('last').addEventListener('click', () => {
+      view.pagination();
     });
   }
 }
