@@ -1,4 +1,3 @@
-/* eslint-disable no-plusplus */
 export default class AppModel {
   constructor(state) {
     this.state = state;

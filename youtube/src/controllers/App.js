@@ -42,8 +42,22 @@ export default class App {
 
       const walk = (x - startX) * 1.5;
       slider.scrollLeft = scrollLeft - walk;
-      console.log(slider.scrollLeft);
-      console.log(scrollLeft);
+    });
+  }
+
+  static pagination() {
+    const circles = document.querySelector('.list-mod');
+    circles.addEventListener('click', (event) => {
+      const currentCircle = +event.toElement.innerText;
+
+      if (event.toElement.id !== 'last') {
+        event.toElement.childNodes[0].classList.add('red');
+        while (circles.childNodes[currentCircle].id !== 'last') {
+          circles.childNodes[currentCircle].remove();
+        }
+        circles.lastChild.innerText = currentCircle + 1;
+        // circles.lastChild.classList.remove('red');
+      }
     });
   }
 
@@ -56,6 +70,12 @@ export default class App {
 
     view.render();
     App.slider();
+
+    document.getElementById('last').addEventListener('click', () => {
+      AppView.pagination();
+    });
+
+    App.pagination();
 
     document.querySelector('input').addEventListener('keypress', async (event) => {
       if (event.keyCode === 13) {
@@ -76,10 +96,6 @@ export default class App {
         view.render();
       }
       App.slider();
-    });
-
-    document.getElementById('last').addEventListener('click', () => {
-      view.pagination();
     });
   }
 }
