@@ -20,7 +20,8 @@ export default class AppView {
       elem.parentNode.removeChild(elem);
     }
     const content = document.createElement('ul');
-    content.innerHTML = this.videos.map(item => `<li>
+    content.setAttribute('class', 'items');
+    content.innerHTML = this.videos.map(item => `<li class="item">
                                                   <img class="image-mod" src="${item.image}">
                                                   <a href="${item.link}" class="title-mod" target="_blank">${item.title}</a>
                                                   <p class="channel-mod">${item.channelTitle}</p>

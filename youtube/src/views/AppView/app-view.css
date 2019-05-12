@@ -10,13 +10,17 @@ input {
   margin-bottom: 15px;
 }
 
-ul {
+.items {
   display: flex;
-  justify-content: center;
   list-style: none;
+  overflow: hidden;
+  cursor: grabbing;
+  margin: 10px auto;
+  width: 1180px;
 }
 
-li {
+.item {
+  /* display: inline-block; */
   position: relative;
   background-color: white;
   border-radius: 5px;
