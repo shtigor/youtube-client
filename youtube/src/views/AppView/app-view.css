@@ -38,6 +38,7 @@ input {
   font-weight: bold;
   text-decoration: underline;
   top: 15%;
+  width: 100%;
 }
 
 .image-mod {
@@ -116,4 +117,8 @@ input {
   width: 21px;
   height: 21px;
   line-height: 21px;
+}
+
+.white {
+  font-size: 0;
 }

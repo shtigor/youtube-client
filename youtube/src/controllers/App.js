@@ -1,8 +1,8 @@
 import AppModel from '../models/AppModel';
 import AppView from '../views/AppView';
 
-// 'AIzaSyCTWC75i70moJLzyNh3tt4jzCljZcRkU8Y';
-const key = 'AIzaSyApT_ZFxRMHcuqpc4yARUZXZsGb75SICJU';
+// 'AIzaSyApT_ZFxRMHcuqpc4yARUZXZsGb75SICJU';
+const key = 'AIzaSyCTWC75i70moJLzyNh3tt4jzCljZcRkU8Y';
 const chunk = 15;
 
 export default class App {
@@ -17,14 +17,15 @@ export default class App {
     // SLIDER
     const slider = document.querySelector('.items');
     let isDown = false;
+    let isUp = true;
     let startX;
-    let scrollLeft;
+    // let scrollLeft;
 
     slider.addEventListener('mousedown', (event) => {
       isDown = true;
       startX = event.pageX - slider.offsetLeft;
       // eslint-disable-next-line prefer-destructuring
-      scrollLeft = slider.scrollLeft;
+      // scrollLeft = slider.scrollLeft;
     });
 
     slider.addEventListener('mouseleave', () => {
@@ -33,6 +34,7 @@ export default class App {
 
     slider.addEventListener('mouseup', () => {
       isDown = false;
+      isUp = true;
     });
 
     slider.addEventListener('mousemove', (event) => {
@@ -41,7 +43,22 @@ export default class App {
       const x = event.pageX - slider.offsetLeft;
 
       const walk = (x - startX) * 1.5;
-      slider.scrollLeft = scrollLeft - walk;
+      if (walk < -85) {
+        // slider.scrollLeft = scrollLeft - walk;
+        if (isUp) {
+          AppView.pagination();
+          isUp = false;
+        }
+        const currentPage = +document.querySelector('.red').innerText;
+        slider.scrollLeft = 1180 * (currentPage - 1);
+      } else if (walk > 85) {
+        if (isUp) {
+          AppView.prevPagination();
+          isUp = false;
+        }
+        const currentPage = +document.querySelector('.red').innerText;
+        slider.scrollLeft = 1180 * (currentPage - 1);
+      }
     });
   }
 
@@ -50,14 +67,18 @@ export default class App {
     circles.addEventListener('click', (event) => {
       const currentCircle = +event.toElement.innerText;
 
-      if (event.toElement.id !== 'last') {
+      if (event.toElement.id !== 'last' && !event.toElement.classList.contains('red')) {
+        event.toElement.childNodes[0].classList.remove('white');
         event.toElement.childNodes[0].classList.add('red');
         while (circles.childNodes[currentCircle].id !== 'last') {
           circles.childNodes[currentCircle].remove();
         }
         circles.lastChild.innerText = currentCircle + 1;
-        // circles.lastChild.classList.remove('red');
       }
+
+      const slider = document.querySelector('.items');
+      const pageNumber = +document.querySelector('.red').innerText;
+      slider.scrollLeft = 1180 * (pageNumber - 1);
     });
   }
 
@@ -96,6 +117,12 @@ export default class App {
         view.render();
       }
       App.slider();
+
+      document.getElementById('last').addEventListener('click', () => {
+        AppView.pagination();
+      });
+
+      App.pagination();
     });
   }
 }

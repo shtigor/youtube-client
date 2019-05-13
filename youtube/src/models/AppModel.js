@@ -8,7 +8,12 @@ export default class AppModel {
     let item = {};
     for (let i = 0; i < data.items.length; i++) {
       item.id = data.items[i].id.videoId;
-      item.title = data.items[i].snippet.title;
+
+      item.title = `${data.items[i].snippet.title}`;
+      if (item.title.length > 66) {
+        item.title = `${item.title.slice(0, 66)} ...`;
+      }
+
       item.description = `${data.items[i].snippet.description.slice(0, 100)} ...`;
       item.channelTitle = data.items[i].snippet.channelTitle;
 

@@ -4,10 +4,11 @@ export default class AppView {
   }
 
   static pagination() {
-    const firstCircle = document.getElementsByClassName('red');
+    const firstCircle = document.querySelector('.red');
     const lastCircle = document.getElementById('last');
 
-    firstCircle[0].classList.remove('red');
+    firstCircle.classList.remove('red');
+    firstCircle.classList.add('white');
 
     const newItem = document.createElement('a');
     newItem.setAttribute('href', '#');
@@ -17,10 +18,26 @@ export default class AppView {
     numPage.setAttribute('class', 'red');
     numPage.innerHTML = lastCircle.innerText;
     newItem.appendChild(numPage);
-    lastCircle.innerHTML = `<span>${+lastCircle.innerText + 1}</span>`;
+    lastCircle.innerHTML = `<span class="white">${+lastCircle.innerText + 1}</span>`;
 
-    const list = document.getElementsByClassName('list-mod');
-    list[0].insertBefore(newItem, list[0].childNodes[list[0].childNodes.length - 1]);
+    const list = document.querySelector('.list-mod');
+    list.insertBefore(newItem, list.childNodes[list.childNodes.length - 1]);
+  }
+
+  static prevPagination() {
+    const redCircle = document.querySelector('.red');
+    const countCircles = document.querySelector('.list-mod').childElementCount;
+    const lastCircle = document.getElementById('last');
+    if (countCircles > 2) {
+      const number = +redCircle.innerText;
+      const prevElem = document.querySelector('.list-mod').childNodes[number - 2].childNodes[0];
+      prevElem.classList.remove('white');
+      prevElem.classList.add('red');
+
+      lastCircle.innerText = number;
+
+      document.querySelector('.list-mod').removeChild(document.querySelector('.list-mod').childNodes[number - 1]);
+    }
   }
 
   render() {
@@ -51,12 +68,15 @@ export default class AppView {
                                                 </li>`).join('');
     document.body.appendChild(content);
 
-    if (this.videos.length > 1) {
-      const pagination = document.createElement('div');
-      pagination.setAttribute('class', 'list-mod');
-      pagination.innerHTML = '<a href="#" class="pagination-mod" id="first"><span class="red">1</span></a><a href="#" class="pagination-mod" id="last"><span>2</span></a>';
 
-      document.body.appendChild(pagination);
+    if (document.querySelector('.list-mod')) {
+      const elem = document.querySelector('.list-mod');
+      elem.parentNode.removeChild(elem);
     }
+    const pagination = document.createElement('div');
+    pagination.setAttribute('class', 'list-mod');
+    pagination.innerHTML = '<a href="#" class="pagination-mod" id="first"><span class="red">1</span></a><a href="#" class="pagination-mod" id="last"><span class="white">2</span></a>';
+
+    document.body.appendChild(pagination);
   }
 }
