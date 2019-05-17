@@ -40,25 +40,10 @@ export default class AppView {
     }
   }
 
-  render() {
-    // Serach box
-    if (!document.querySelector('input')) {
-      const searchBox = document.createElement('input');
-      searchBox.type = 'text';
-      searchBox.placeholder = 'Search...';
+  static addMoreVideos(videos) {
+    const ulElement = document.querySelector('.items');
 
-      document.body.appendChild(searchBox);
-    }
-
-
-    // Videos
-    if (document.querySelector('ul')) {
-      const elem = document.querySelector('ul');
-      elem.parentNode.removeChild(elem);
-    }
-    const content = document.createElement('ul');
-    content.setAttribute('class', 'items');
-    content.innerHTML = this.videos.map(item => `<li class="item">
+    ulElement.innerHTML = videos.map(item => `<li class="item">
                                                   <img class="image-mod" src="${item.image}">
                                                   <a href="${item.link}" class="title-mod" target="_blank">${item.title}</a>
                                                   <p class="channel-mod">${item.channelTitle}</p>
@@ -66,17 +51,70 @@ export default class AppView {
                                                   <p class="viewers-mod">${item.viewCount}</p>
                                                   <p class="description-mod">${item.description}</p>
                                                 </li>`).join('');
-    document.body.appendChild(content);
+    document.body.appendChild(ulElement);
+  }
 
+  render() {
+    let search = document.querySelector('input');
 
-    if (document.querySelector('.list-mod')) {
-      const elem = document.querySelector('.list-mod');
-      elem.parentNode.removeChild(elem);
+    // Serach box
+    if (!search) {
+      search = document.createElement('input');
+      search.type = 'text';
+      search.placeholder = 'Search...';
+
+      document.body.appendChild(search);
     }
-    const pagination = document.createElement('div');
-    pagination.setAttribute('class', 'list-mod');
-    pagination.innerHTML = '<a href="#" class="pagination-mod" id="first"><span class="red">1</span></a><a href="#" class="pagination-mod" id="last"><span class="white">2</span></a>';
 
-    document.body.appendChild(pagination);
+    if (search.value) {
+      // Videos
+      const ulElement = document.querySelector('ul');
+      let content = '';
+      if (ulElement && document.querySelector('.list-mod').childElementCount === 2) {
+        const elem = document.querySelector('ul');
+        elem.innerHTML = '';
+      }
+
+      if (ulElement) {
+        content = ulElement;
+
+        content.innerHTML += this.videos.map(item => `<li class="item">
+                                                    <img class="image-mod" src="${item.image}">
+                                                    <a href="${item.link}" class="title-mod" target="_blank">${item.title}</a>
+                                                    <p class="channel-mod">${item.channelTitle}</p>
+                                                    <p class="date-mod">${item.publishAt}</p>
+                                                    <p class="viewers-mod">${item.viewCount}</p>
+                                                    <p class="description-mod">${item.description}</p>
+                                                  </li>`).join('');
+        ulElement.innerHTML = content.innerHTML;
+      } else {
+        content = document.createElement('ul');
+        content.setAttribute('class', 'items');
+
+        content.innerHTML = this.videos.map(item => `<li class="item">
+                                                    <img class="image-mod" src="${item.image}">
+                                                    <a href="${item.link}" class="title-mod" target="_blank">${item.title}</a>
+                                                    <p class="channel-mod">${item.channelTitle}</p>
+                                                    <p class="date-mod">${item.publishAt}</p>
+                                                    <p class="viewers-mod">${item.viewCount}</p>
+                                                    <p class="description-mod">${item.description}</p>
+                                                  </li>`).join('');
+        document.body.appendChild(content);
+      }
+
+
+      if (document.querySelector('.list-mod') && document.querySelector('.list-mod').childElementCount === 2) {
+        const elem = document.querySelector('.list-mod');
+        elem.parentNode.removeChild(elem);
+      }
+
+      if (document.querySelector('.list-mod') === null) {
+        const pagination = document.createElement('div');
+        pagination.setAttribute('class', 'list-mod');
+        pagination.innerHTML = '<a href="#" class="pagination-mod" id="first"><span class="red">1</span></a><a href="#" class="pagination-mod" id="last"><span class="white">2</span></a>';
+
+        document.body.appendChild(pagination);
+      }
+    }
   }
 }

@@ -26,7 +26,8 @@ export default class AppModel {
       videos.push(item);
       item = {};
     }
-    return videos;
+
+    return { video: videos, token: data.nextPageToken };
   }
 
   static extractStatistic(data, stat) {
@@ -49,7 +50,6 @@ export default class AppModel {
 
   async getClipStat(data) {
     let { statisticsUrl } = this.state;
-
     const ids = [];
     for (let i = 0; i < data.length; i++) {
       ids.push(data[i].id);
