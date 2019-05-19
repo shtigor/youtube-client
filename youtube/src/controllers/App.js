@@ -3,7 +3,7 @@ import AppView from '../views/AppView';
 
 // 'AIzaSyApT_ZFxRMHcuqpc4yARUZXZsGb75SICJU';
 const key = 'AIzaSyB-y25GvRw1sBqTiWVfUjfe09h69hR76sU';
-const chunk = 5;
+const chunk = 15;
 
 export default class App {
   constructor() {
@@ -33,7 +33,7 @@ export default class App {
       isDown = false;
     });
 
-    slider.addEventListener('mouseup', () => {
+    slider.addEventListener('mouseup', async () => {
       isDown = false;
       isUp = true;
     });
@@ -86,52 +86,11 @@ export default class App {
   }
 
   async start() {
-    const items = document.querySelector('.items');
     let model = new AppModel();
     let data;
-    // data = await model.getClipStat(data.video);
 
     let view = new AppView();
     view.render();
-
-    if (items) {
-      App.slider();
-
-      document.getElementById('last').addEventListener('click', () => {
-        AppView.pagination();
-      });
-
-      document.querySelector('#last').addEventListener('click', async () => {
-        AppView.pagination();
-
-        const countVideos = +document.querySelector('.items').childElementCount;
-        const countCircles = +document.querySelector('.list-mod').childElementCount;
-        if (countVideos < countCircles * 4) {
-          model = new AppModel(this.state);
-          data = await model.getClipInfo();
-
-          this.state.token = data.token;
-          const posToken = this.state.url.indexOf('&pageToken=');
-          this.state.url = this.state.url.slice(0, posToken);
-          this.state.url = `${this.state.url}&pageToken=${this.state.token}`;
-
-          data = await model.getClipStat(data.video);
-
-          view = new AppView(data);
-          view.render();
-        }
-      });
-
-      App.pagination();
-    }
-
-    // App.slider();
-
-    // document.getElementById('last').addEventListener('click', () => {
-    //   AppView.pagination();
-    // });
-
-    // App.pagination();
 
     document.querySelector('input').addEventListener('keypress', async (event) => {
       if (event.keyCode === 13) {
@@ -147,14 +106,8 @@ export default class App {
         model = new AppModel(this.state);
         data = await model.getClipInfo();
 
-        // if (lastSearch === search) {
         this.state.token = data.token;
         this.state.url = `${this.state.url}&pageToken=${this.state.token}`;
-        // } else {
-        //   this.state.token = '';
-        //   const posToken = this.state.url.indexOf('&pageToken=');
-        //   this.state.url = this.state.url.slice(0, posToken);
-        // }
 
         data = await model.getClipStat(data.video);
 
@@ -164,10 +117,51 @@ export default class App {
         App.slider();
 
         App.pagination();
-      }
-      // App.slider();
 
-      // App.pagination();
+        document.querySelector('#last').addEventListener('click', async () => {
+          AppView.pagination();
+
+          const countVideos = +document.querySelector('.items').childElementCount;
+          const countCircles = +document.querySelector('.list-mod').childElementCount;
+          if (countVideos < countCircles * 4) {
+            model = new AppModel(this.state);
+            data = await model.getClipInfo();
+
+            this.state.token = data.token;
+            const posToken = this.state.url.indexOf('&pageToken=');
+            this.state.url = this.state.url.slice(0, posToken);
+            this.state.url = `${this.state.url}&pageToken=${this.state.token}`;
+
+            data = await model.getClipStat(data.video);
+
+            view = new AppView(data);
+            view.render();
+          }
+        });
+
+        const slider = document.querySelector('.items');
+        slider.addEventListener('mouseup', async () => {
+          const countVideos = +document.querySelector('.items').childElementCount;
+          const countCircles = +document.querySelector('.list-mod').childElementCount;
+          if (countVideos < countCircles * 4) {
+            model = new AppModel(this.state);
+            data = await model.getClipInfo();
+
+            this.state.token = data.token;
+            this.state.url = `${this.state.url}&pageToken=${this.state.token}`;
+
+            this.state.token = data.token;
+            const posToken = this.state.url.indexOf('&pageToken=');
+            this.state.url = this.state.url.slice(0, posToken);
+            this.state.url = `${this.state.url}&pageToken=${this.state.token}`;
+
+            data = await model.getClipStat(data.video);
+
+            view = new AppView(data);
+            view.render();
+          }
+        });
+      }
     });
   }
 }
