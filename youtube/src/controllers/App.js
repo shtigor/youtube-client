@@ -46,21 +46,21 @@ export default class App {
       const walk = (x - startX) * 1.5;
       slider.scrollLeft = scrollLeft - walk;
 
+      const widthSlider = parseInt(getComputedStyle(slider).width, 10);
       if (walk < -85) {
-        // slider.scrollLeft = scrollLeft - walk;
         if (isUp) {
           AppView.pagination();
           isUp = false;
         }
         const currentPage = +document.querySelector('.red').innerText;
-        slider.scrollLeft = 1180 * (currentPage - 1);
+        slider.scrollLeft = widthSlider * (currentPage - 1);
       } else if (walk > 85) {
         if (isUp) {
           AppView.prevPagination();
           isUp = false;
         }
         const currentPage = +document.querySelector('.red').innerText;
-        slider.scrollLeft = 1180 * (currentPage - 1);
+        slider.scrollLeft = widthSlider * (currentPage - 1);
       }
     });
   }
@@ -81,7 +81,8 @@ export default class App {
 
       const slider = document.querySelector('.items');
       const pageNumber = +document.querySelector('.red').innerText;
-      slider.scrollLeft = 1180 * (pageNumber - 1);
+      const widthSlider = parseInt(getComputedStyle(slider).width, 10);
+      slider.scrollLeft = widthSlider * (pageNumber - 1);
     });
   }
 
@@ -92,9 +93,9 @@ export default class App {
     let view = new AppView();
     view.render();
 
-    document.querySelector('input').addEventListener('keypress', async (event) => {
+    document.querySelector('.search').addEventListener('keypress', async (event) => {
       if (event.keyCode === 13) {
-        const search = document.querySelector('input').value;
+        const search = document.querySelector('.search').value;
         const posQ = this.state.url.indexOf('q=');
         const lastSearch = this.state.url.slice(posQ + 2, this.state.url.length);
         if (lastSearch !== search && lastSearch !== '') {

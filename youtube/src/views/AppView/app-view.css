@@ -5,9 +5,19 @@ body {
   background-color: #343d46;
 }
 
-input {
+.search {
   margin-top: 10px;
   margin-bottom: 15px;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  width: 300px;
+  border-radius: 10px;
+  border-color: #343d46;
+}
+
+.search:focus {
+  border: 2px solid #cb3131;
 }
 
 .items {
@@ -17,6 +27,7 @@ input {
   cursor: grabbing;
   margin: 10px auto;
   width: 1180px;
+  padding: 0;
 }
 
 .item {
@@ -24,9 +35,14 @@ input {
   position: relative;
   background-color: white;
   border-radius: 5px;
-  margin-right: 50px;
+  margin: 0 25px;
   width: 250px;
   height: 400px;
+}
+
+.item:hover {
+  background-color: rgb(232, 232, 232);
+  transform: scale(1.01);
 }
 
 .title-mod {
@@ -39,6 +55,10 @@ input {
   text-decoration: underline;
   top: 15%;
   width: 100%;
+}
+
+.title-mod:hover {
+  color: #cecece;
 }
 
 .image-mod {
@@ -110,6 +130,10 @@ input {
   line-height: 25px;
 }
 
+.pagination-mod:hover {
+  background-color: #c98a8a;
+}
+
 .red {
   display: inline-block;
   background-color: #cb3131;
@@ -121,4 +145,37 @@ input {
 
 .white {
   font-size: 0;
+}
+
+@media only screen and (max-width: 900px) {
+  .items {
+    display: flex;
+    list-style: none;
+    overflow: hidden;
+    cursor: grabbing;
+    margin: 10px auto;
+    width: 885px;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .items {
+    display: flex;
+    list-style: none;
+    overflow: hidden;
+    cursor: grabbing;
+    margin: 10px auto;
+    width: 590px;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .items {
+    display: flex;
+    list-style: none;
+    overflow: hidden;
+    cursor: grabbing;
+    margin: 10px auto;
+    width: 295px;
+  }
 }

@@ -55,13 +55,14 @@ export default class AppView {
   }
 
   render() {
-    let search = document.querySelector('input');
+    let search = document.querySelector('.search');
 
     // Serach box
     if (!search) {
       search = document.createElement('input');
       search.type = 'text';
       search.placeholder = 'Search...';
+      search.setAttribute('class', 'search');
 
       document.body.appendChild(search);
     }
