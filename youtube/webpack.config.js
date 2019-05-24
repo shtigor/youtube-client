@@ -5,7 +5,8 @@ module.exports = {
   entry: './src/index.js',
   output: {
     filename: 'app.bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'build'),
+    publicPath: '/webpack-demo/',
   },
   devtool: 'source-map',
   module: {
