@@ -3,7 +3,7 @@ import AppView from '../views/AppView';
 
 // 'AIzaSyApT_ZFxRMHcuqpc4yARUZXZsGb75SICJU';
 const key = 'AIzaSyB-y25GvRw1sBqTiWVfUjfe09h69hR76sU';
-const chunk = 15;
+const chunk = 6;
 
 export default class App {
   constructor() {
@@ -68,11 +68,11 @@ export default class App {
   static pagination() {
     const circles = document.querySelector('.list-mod');
     circles.addEventListener('click', (event) => {
-      const currentCircle = +event.toElement.innerText;
+      const currentCircle = +event.target.innerText;
 
-      if (event.toElement.id !== 'last' && !event.toElement.classList.contains('red')) {
-        event.toElement.childNodes[0].classList.remove('white');
-        event.toElement.childNodes[0].classList.add('red');
+      if (event.target.id !== 'last' && !event.target.classList.contains('red')) {
+        event.target.childNodes[0].classList.remove('white');
+        event.target.childNodes[0].classList.add('red');
         while (circles.childNodes[currentCircle].id !== 'last') {
           circles.childNodes[currentCircle].remove();
         }
