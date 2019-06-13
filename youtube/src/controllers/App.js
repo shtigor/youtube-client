@@ -71,12 +71,15 @@ export default class App {
       const currentCircle = +event.target.innerText;
 
       if (event.target.id !== 'last' && !event.target.classList.contains('red')) {
-        event.target.childNodes[0].classList.remove('white');
-        event.target.childNodes[0].classList.add('red');
-        while (circles.childNodes[currentCircle].id !== 'last') {
-          circles.childNodes[currentCircle].remove();
+        if (event.target.childNodes[0].tagName !== 'A') {
+          event.target.childNodes[0].classList.remove('white');
+          event.target.childNodes[0].classList.add('red');
+
+          while (circles.childNodes[currentCircle].id !== 'last') {
+            circles.childNodes[currentCircle].remove();
+          }
+          circles.lastChild.innerText = currentCircle + 1;
         }
-        circles.lastChild.innerText = currentCircle + 1;
       }
 
       const slider = document.querySelector('.items');
