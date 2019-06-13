@@ -1,8 +1,8 @@
 import AppModel from '../models/AppModel';
 import AppView from '../views/AppView';
 
-// 'AIzaSyApT_ZFxRMHcuqpc4yARUZXZsGb75SICJU';
-const key = 'AIzaSyB-y25GvRw1sBqTiWVfUjfe09h69hR76sU';
+// 'AIzaSyB-y25GvRw1sBqTiWVfUjfe09h69hR76sU';
+const key = 'AIzaSyApT_ZFxRMHcuqpc4yARUZXZsGb75SICJU';
 const chunk = 6;
 
 export default class App {
@@ -71,15 +71,16 @@ export default class App {
       const currentCircle = +event.target.innerText;
 
       if (event.target.id !== 'last' && !event.target.classList.contains('red')) {
-        if (event.target.childNodes[0].tagName !== 'A') {
-          event.target.childNodes[0].classList.remove('white');
-          event.target.childNodes[0].classList.add('red');
+        // if (event.target.childNodes[0].tagName !== 'A' && event.target.tagName !== 'SPAN') {
+        const circleNumber = +event.target.innerText - 1;
 
-          while (circles.childNodes[currentCircle].id !== 'last') {
-            circles.childNodes[currentCircle].remove();
-          }
-          circles.lastChild.innerText = currentCircle + 1;
+        circles.children[circleNumber].childNodes[0].classList.remove('white');
+        circles.children[circleNumber].childNodes[0].classList.add('red');
+
+        while (circles.childNodes[currentCircle].id !== 'last') {
+          circles.childNodes[currentCircle].remove();
         }
+        circles.lastChild.innerText = currentCircle + 1;
       }
 
       const slider = document.querySelector('.items');

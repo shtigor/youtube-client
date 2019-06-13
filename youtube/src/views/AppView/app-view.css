@@ -134,6 +134,10 @@ body {
   background-color: #c98a8a;
 }
 
+.pagination-mod:hover .white {
+  font-size: 12px;
+}
+
 .red {
   display: inline-block;
   background-color: #cb3131;
@@ -179,3 +183,4 @@ body {
     width: 295px;
   }
 }
+
